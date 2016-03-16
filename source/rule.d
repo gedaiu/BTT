@@ -14,7 +14,7 @@ struct WeekDays {
   bool sunday;
 }
 
-class CalendarRule {
+class Rule {
   WeekDays days;
 
   TimeOfDay startTime = TimeOfDay(0,0,0);
@@ -67,7 +67,7 @@ class CalendarRule {
     firstDay.hour = 0;
     firstDay.minute = 0;
     firstDay.second = 0;
-    firstDay.fracSec = FracSec.zero;
+    firstDay.fracSecs = 0.seconds;
 
     if(weekStartOnMonday) firstDay +=  dur!"days"(1);
 
@@ -104,12 +104,12 @@ class CalendarRule {
     auto endInterval = SysTime.fromUnixTime(endIntervalStamp);
 
     auto firstDay = start - dur!"days"(start.dayOfWeek);
-    firstDay.fracSec = FracSec.zero;
+    firstDay.fracSecs = 0.seconds;
 
     if(weekStartOnMonday) firstDay +=  dur!"days"(1);
 
     auto currentDay = start;
-    currentDay.fracSec = FracSec.zero;
+    currentDay.fracSecs = 0.seconds;
 
     TimeInterval[] intervals;
 
@@ -143,7 +143,7 @@ class CalendarRule {
 }
 
 unittest {
-  auto testProgram = new CalendarRule;
+  auto testProgram = new Rule;
 
   bool failed = false;
 
@@ -157,7 +157,7 @@ unittest {
 }
 
 unittest {
-  auto testProgram = new CalendarRule;
+  auto testProgram = new Rule;
 
   testProgram.startTime = TimeOfDay(1,0,0);
   testProgram.endTime = TimeOfDay(0,0,0);
@@ -178,15 +178,15 @@ unittest {
   long end = SysTime(DateTime(2014,1,2,0,0,0)).toUnixTime;
 
   //range check
-  assert(!CalendarRule.isInsideDateInterval(start, end, start - 1));
-  assert( CalendarRule.isInsideDateInterval(start, end, start) );
-  assert( CalendarRule.isInsideDateInterval(start, end, end - 1));
-  assert(!CalendarRule.isInsideDateInterval(start, end, end));
+  assert(!Rule.isInsideDateInterval(start, end, start - 1));
+  assert( Rule.isInsideDateInterval(start, end, start) );
+  assert( Rule.isInsideDateInterval(start, end, end - 1));
+  assert(!Rule.isInsideDateInterval(start, end, end));
 }
 
 unittest {
   //check rule colisons
-  auto testProgram = new CalendarRule;
+  auto testProgram = new Rule;
 
   testProgram.startTime = TimeOfDay(10,0,0);
   testProgram.endTime = TimeOfDay(11,0,0);
@@ -202,7 +202,7 @@ unittest {
   Check rule colisons
 */
 unittest {
-  auto testProgram = new CalendarRule;
+  auto testProgram = new Rule;
 
   testProgram.startTime = TimeOfDay(10,0,0);
   testProgram.endTime = TimeOfDay(11,0,0);
@@ -221,7 +221,7 @@ unittest {
   Check interval generation with UTC dates
 */
 unittest {
-  auto testProgram = new CalendarRule;
+  auto testProgram = new Rule;
   testProgram.startTime = TimeOfDay(10,0,0);
   testProgram.endTime = TimeOfDay(11,0,0);
   testProgram.repeatAfterWeeks = 2;

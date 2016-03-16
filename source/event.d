@@ -1,5 +1,6 @@
 module btt.event;
-import btt.rule;
+
+public import btt.rule;
 
 struct TimeInterval {
 	long begin;
@@ -37,9 +38,11 @@ abstract class CalendarEvent {
 		void postpone(const long customBoundary);
 		long postpone() const;
 
-		CalendarRule[] rules() const;
-		void rules(CalendarRule[] someRules);
+		Rule[] rules() const;
+		void rules(Rule[] someRules);
 	}
+
+	void set(long time1, long time2);
 }
 
 long ldur(string units, T)(T count) {
