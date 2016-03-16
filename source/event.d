@@ -16,7 +16,7 @@ enum EventType {
   Repetable = "Repetable"
 }
 
-abstract class CalendarEvent {
+interface CalendarEvent {
 
 	@property {
 		const(EventType) itemType() const;
