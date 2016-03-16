@@ -1,11 +1,9 @@
-module btt.event;
+module bt.toolbox.event;
 
-public import btt.rule;
-
-struct TimeInterval {
-	long begin;
-	long end;
-}
+public import bt.toolbox.rule;
+public import bt.toolbox.timeinterval;
+public import vibe.data.json;
+public import std.datetime;
 
 enum EventType {
   Undefined = "Undefined",
@@ -16,7 +14,11 @@ enum EventType {
   Repetable = "Repetable"
 }
 
-interface CalendarEvent {
+TimeInterval interval(const CalendarEvent event) {
+  return TimeInterval(event.begin, event.end);
+}
+
+abstract class CalendarEvent {
 
 	@property {
 		const(EventType) itemType() const;
@@ -40,6 +42,11 @@ interface CalendarEvent {
 
 		Rule[] rules() const;
 		void rules(Rule[] someRules);
+	}
+
+	Json toJson() const;
+	string toICS() const {
+		return "";
 	}
 
 	void set(long time1, long time2);

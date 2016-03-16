@@ -1,7 +1,7 @@
-module btt.events.fixedbasic;
+module bt.toolbox.events.fixedbasic;
 
-import btt.events.basic;
-import btt.event;
+import bt.toolbox.events.basic;
+import bt.toolbox.event;
 
 class FixedBasicCalendarEvent : BasicCalendarEvent {
   override {

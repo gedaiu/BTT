@@ -1,6 +1,6 @@
-module btt.events.autopostpone;
+module bt.toolbox.events.autopostpone;
 
-import btt.event;
+import bt.toolbox.event;
 import std.datetime;
 
 class AutoPostponeCalendarEvent : CalendarEvent {
@@ -84,6 +84,32 @@ class AutoPostponeCalendarEvent : CalendarEvent {
         _duration = time2-time1;
         _begin = time1;
     }
+
+    Json toJson() const {
+      Json data = Json.emptyObject;
+
+      data.itemType = itemType.to!string;
+      data.desiredBegin = SysTime.fromUnixTime(_begin).toUTC.toISOExtString;
+      data.desiredEnd = SysTime.fromUnixTime(_end).toUTC.toISOExtString;
+      data.begin = SysTime.fromUnixTime(begin).toUTC.toISOExtString;
+      data.end = SysTime.fromUnixTime(end).toUTC.toISOExtString;
+      data.boundary = _boundary;
+      data.postpone = _postpone;
+
+      return data;
+    }
+  }
+
+  static AutoPostponeCalendarEvent fromJson(Json data) {
+    auto event = new AutoPostponeCalendarEvent();
+
+    event.begin = SysTime.fromISOExtString(data["begin"].to!string).toUnixTime;
+    event.end = SysTime.fromISOExtString(data["end"].to!string).toUnixTime;
+
+    event.boundary = data["boundary"].to!long;
+    event.postpone = data["postpone"].to!long;
+
+    return event;
   }
 
   protected {

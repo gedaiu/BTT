@@ -1,7 +1,7 @@
-module btt.events.repetable;
+module bt.toolbox.events.repetable;
 
-import btt.event;
-import btt.events.basic;
+import bt.toolbox.event;
+import bt.toolbox.events.basic;
 
 import std.datetime;
 

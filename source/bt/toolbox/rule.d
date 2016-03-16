@@ -1,8 +1,7 @@
-module btt.rule;
+module bt.toolbox.rule;
 
 import std.datetime;
-import btt.event;
-
+import bt.toolbox.event;
 
 struct WeekDays {
   bool monday;
@@ -21,9 +20,15 @@ class Rule {
   TimeOfDay endTime = TimeOfDay(1,0,0);
 
   ulong repeatAfterWeeks;
-  bool weekStartOnMonday;
+
+  @optional
+  bool weekStartOnMonday = true;
 
   string[] tags;
+
+  string toICalProperties(string) {
+    return "";
+  }
 
   /**
    * Check if a date satisfy a rule
@@ -135,6 +140,17 @@ class Rule {
     }
 
     return intervals;
+  }
+
+  Json toJson() const {
+    Json data = Json.emptyObject;
+
+    data.itemType = "RulePrototype";
+    data.days = serializeToJson(days);
+    data.startTime = startTime.toISOExtString;
+    data.endTime = endTime.toISOExtString;
+
+    return data;
   }
 
   invariant() {

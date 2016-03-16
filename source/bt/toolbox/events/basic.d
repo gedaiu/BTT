@@ -1,6 +1,6 @@
-module btt.events.basic;
+module bt.toolbox.events.basic;
 
-import btt.event;
+import bt.toolbox.event;
 import std.conv;
 
 /**
@@ -95,6 +95,25 @@ class BasicCalendarEvent : CalendarEvent {
         _end = time2;
       }
     }
+
+    Json toJson() const {
+      Json data = Json.emptyObject;
+
+      data["itemType"] = itemType.to!string;
+      data["end"] = SysTime.fromUnixTime(end).toUTC.toISOExtString;
+      data["begin"] = SysTime.fromUnixTime(begin).toUTC.toISOExtString;
+
+      return data;
+    }
+  }
+
+  static BasicCalendarEvent fromJson(Json src) {
+    auto elm = new BasicCalendarEvent();
+
+    elm.set(SysTime.fromISOExtString(src.begin.to!string).toUnixTime,
+            SysTime.fromISOExtString(src.end.to!string).toUnixTime);
+
+    return elm;
   }
 
   ///Invariant to check the event consistency

@@ -1,7 +1,7 @@
-module btt.events.unknownend;
+module bt.toolbox.events.unknownend;
 
-import btt.event;
-import btt.events.basic;
+import bt.toolbox.event;
+import bt.toolbox.events.basic;
 
 import std.datetime;
 
@@ -72,6 +72,17 @@ class UnknownEndCalendarEvent : BasicCalendarEvent
         begin = time1;
         end = time2;
       }
+    }
+
+    Json toJson() const {
+      Json data = Json.emptyObject;
+
+      data.itemType = itemType.to!string;
+      data.desiredEnd = SysTime.fromUnixTime(_begin + _duration).toUTC.toISOExtString;
+      data.begin = SysTime.fromUnixTime(begin).toUTC.toISOExtString;
+      data.end = SysTime.fromUnixTime(end).toUTC.toISOExtString;
+
+      return data;
     }
   }
 }

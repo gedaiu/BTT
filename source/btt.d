@@ -1,10 +1,27 @@
-module btt.all;
+module btt;
 
-import btt.rule;
-import btt.event;
+public import bt.toolbox.rule;
+public import bt.toolbox.event;
 
-import btt.events.autopostpone;
-import btt.events.basic;
-import btt.events.fixedbasic;
-import btt.events.repetable;
-import btt.events.unknownend;
+public import bt.toolbox.events.autopostpone;
+public import bt.toolbox.events.basic;
+public import bt.toolbox.events.fixedbasic;
+public import bt.toolbox.events.repetable;
+public import bt.toolbox.events.unknownend;
+
+
+CalendarEvent CalendarFrom(Json data) {
+  if(data["itemType"] == "Standard")
+    return BasicCalendarEvent.fromJson(data);
+
+  if(data["itemType"] == "UnknownEnd")
+    return UnknownEndCalendarEvent.fromJson(data);
+
+  if(data["itemType"] == "FixedStandard")
+    return FixedBasicCalendarEvent.fromJson(data);
+
+  if(data["itemType"] == "AutoPostpone")
+    return AutoPostponeCalendarEvent.fromJson(data);
+
+  throw new Exception("`" ~ data["itemType"].to!string ~ "` not implemented.");
+}
