@@ -14,7 +14,7 @@ enum EventType {
   Repetable = "Repetable"
 }
 
-TimeInterval interval(const CalendarEvent event) {
+TimeInterval interval(const Event event) {
   return TimeInterval(event.begin, event.end);
 }
 
@@ -30,7 +30,7 @@ struct Event {
 	Rule[] rules;
 }
 
-long begin(Event event) {
+long begin(inout Event event) {
   if(event.itemType == EventType.AutoPostpone) {
     auto now = Clock.currTime.toUnixTime;
 
@@ -46,7 +46,7 @@ void begin(ref Event event, long value) {
   event.expectedBegin = value;
 }
 
-long end(Event event) {
+long end(inout Event event) {
   if(event.itemType == EventType.UnknownEnd) {
     auto now = Clock.currTime.toUnixTime;
 
@@ -63,7 +63,7 @@ void end(ref Event event, long value) {
 	event.expectedDuration = duration > 0 ? duration : 0;
 }
 
-long duration(Event event) {
+long duration(inout Event event) {
 	return event.end - event.begin;
 }
 
@@ -85,40 +85,6 @@ bool isEventOn(Event event, long date) {
   }
 
   return result;
-}
-
-abstract class CalendarEvent {
-
-	@property {
-		const(EventType) itemType() const;
-
-		void begin(const long begin);
-		long begin() const;
-
-		void end(const long end);
-		long end() const;
-
-		long endLimit() const;
-
-		long duration() const;
-		void duration(long duration);
-
-		void boundary(const long customBoundary);
-		long boundary() const;
-
-		void postpone(const long customBoundary);
-		long postpone() const;
-
-		Rule[] rules() const;
-		void rules(Rule[] someRules);
-	}
-
-	Json toJson() const;
-	string toICS() const {
-		return "";
-	}
-
-	void set(long time1, long time2);
 }
 
 long ldur(string units, T)(T count) {
