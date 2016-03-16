@@ -18,6 +18,51 @@ TimeInterval interval(const CalendarEvent event) {
   return TimeInterval(event.begin, event.end);
 }
 
+struct Event {
+	EventType itemType;
+
+	long expectedBegin;
+	long expectedDuration;
+
+	long boundary;
+	long postpone;
+
+	Rule[] rules;
+}
+
+long begin(Event event) {
+  if(event.itemType == EventType.AutoPostpone) {
+    auto now = Clock.currTime.toUnixTime;
+
+    if(now + event.boundary >= event.expectedBegin) {
+      return now + event.postpone;
+    }
+  }
+
+	return event.expectedBegin;
+}
+
+void begin(ref Event event, long value) {
+  event.expectedBegin = value;
+}
+
+long end(Event event) {
+	return event.begin + event.expectedDuration;
+}
+
+void end(ref Event event, long value) {
+  auto const duration = value - event.begin;
+	event.expectedDuration = duration > 0 ? duration : 0;
+}
+
+long duration(Event event) {
+	return event.expectedDuration;
+}
+
+void duration(ref Event event, long value) {
+  event.expectedDuration = value;
+}
+
 abstract class CalendarEvent {
 
 	@property {
