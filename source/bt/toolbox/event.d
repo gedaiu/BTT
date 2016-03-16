@@ -71,6 +71,22 @@ void duration(ref Event event, long value) {
   event.expectedDuration = value;
 }
 
+bool isEventOn(Event event, long date) {
+  auto begin = event.begin;
+  auto end = event.end;
+
+  if(date < begin || date >= end) return false;
+  if(event.itemType != EventType.Repetable) return true;
+
+  bool result = false;
+
+  foreach(rule; event.rules) {
+    result = result || rule.isInside(begin, end, date);
+  }
+
+  return result;
+}
+
 abstract class CalendarEvent {
 
 	@property {
