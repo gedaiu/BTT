@@ -7,7 +7,7 @@ import std.conv;
  * Implementation for a basic calendar event
  */
 
-class StandardCalendarEvent : CalendarEvent {
+class BasicCalendarEvent : CalendarEvent {
   //Event start date
   protected long _begin;
 
@@ -104,7 +104,7 @@ class StandardCalendarEvent : CalendarEvent {
 }
 
 unittest {
-  auto testEvent = new StandardCalendarEvent;
+  auto testEvent = new BasicCalendarEvent;
   bool failed = false;
 
   try {
@@ -118,7 +118,7 @@ unittest {
 }
 
 unittest {
-  auto testEvent = new StandardCalendarEvent;
+  auto testEvent = new BasicCalendarEvent;
 
   testEvent.begin = 10_000;
   testEvent.end = 10_000 + ldur!"hours"(1);
