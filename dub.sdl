@@ -1,0 +1,6 @@
+name "btt"
+description "Bogdan's time toolbox"
+copyright "Copyright © 2016, gedaiu"
+authors "gedaiu"
+license "MIT"
+targetType "library"
