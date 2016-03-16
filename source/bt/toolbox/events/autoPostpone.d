@@ -122,7 +122,7 @@ class AutoPostponeCalendarEvent : CalendarEvent {
 Event eventAutoPostpone() {
   auto now = Clock.currTime.toUnixTime;
 
-  return Event(EventType.AutoPostpone, now, 0, ldur!"minutes"(15), ldur!"minutes"(15));
+  return Event(EventType.AutoPostpone, now, 3_600, ldur!"minutes"(15), ldur!"minutes"(15));
 }
 
 // End date estimation test

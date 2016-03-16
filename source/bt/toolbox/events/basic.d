@@ -122,6 +122,12 @@ class BasicCalendarEvent : CalendarEvent {
   }
 }
 
+Event eventBasic() {
+  auto now = Clock.currTime.toUnixTime;
+
+  return Event(EventType.Standard, now, 3_600);
+}
+
 
 unittest {
   auto testEvent = Event(EventType.Standard, 10_000, 3_600);

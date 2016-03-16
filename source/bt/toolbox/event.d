@@ -47,6 +47,14 @@ void begin(ref Event event, long value) {
 }
 
 long end(Event event) {
+  if(event.itemType == EventType.UnknownEnd) {
+    auto now = Clock.currTime.toUnixTime;
+
+    if(now + event.boundary >= event.expectedBegin + event.expectedDuration) {
+      return now;
+    }
+  }
+
 	return event.begin + event.expectedDuration;
 }
 
@@ -56,7 +64,7 @@ void end(ref Event event, long value) {
 }
 
 long duration(Event event) {
-	return event.expectedDuration;
+	return event.end - event.begin;
 }
 
 void duration(ref Event event, long value) {
